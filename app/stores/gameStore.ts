@@ -58,7 +58,7 @@ export const useGameStore = defineStore('game', {
                 loadingBar.start()
                 const kvAPI = userKvAPI()
                 const sessions = await kvAPI.get('game:sessions')
-                if (sessions&&sessions.length) {
+                if (sessions && sessions.length) {
                     this.sessions = sessions
                     this.currentSession = this.currentSession.id ? this.getSessionById(this.currentSession.id) : sessions[0]
                 }

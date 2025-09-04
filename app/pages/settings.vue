@@ -95,15 +95,12 @@ const cancelRedisSync = () => {
 };
 
 const isSyncing = ref(false);
-
 async function syncToRedis() {
-    gameStore.reset()
     isSyncing.value = true;
     try {
         await gameStore.saveTokvAPI();
         showConfirmDialog.value = false;
         message.success('数据内容已经同步覆盖到远程数据库');
-        await gameStore.reset()
         await gameStore.loadSessions()
     } catch (error) {
         console.error('同步失败:', error);
