@@ -10,8 +10,8 @@ export const useGameStore = defineStore('game', {
     state: () => ({
         sessions: [] as GameSession[],
         currentSession: {
-            id: '',
-            name: '',
+            id: '0',
+            name: '默认场次',
             flatCodes: [],
             specialCode: '',
             totalAmount: 0,
@@ -58,7 +58,7 @@ export const useGameStore = defineStore('game', {
                 loadingBar.start()
                 const kvAPI = userKvAPI()
                 const sessions = await kvAPI.get('game:sessions')
-                if (sessions) {
+                if (sessions&&sessions.length) {
                     this.sessions = sessions
                     this.currentSession = this.currentSession.id ? this.getSessionById(this.currentSession.id) : sessions[0]
                 }
@@ -76,13 +76,39 @@ export const useGameStore = defineStore('game', {
         async saveTokvAPI() {
             const kvAPI = userKvAPI()
             try {
+                loadingBar.start()
                 await kvAPI.set(`game:session:${this.currentSession.id}`, this.currentSession)
                 await kvAPI.set('game:sessions', this.sessions)
             } catch (error) {
                 this.error = '保存数据失败'
                 console.error(error)
                 throw error
+            } finally {
+                loadingBar.finish()
             }
+        },
+        //覆盖
+        async reset() {
+            this.sessions = []
+            this.currentSession = {
+                id: '1',
+                name: '默认场次',
+                flatCodes: [],
+                specialCode: '',
+                totalAmount: 0,
+                flatCodeOdds: 2,
+                specialCodeOdds: 47,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                betRecords: [],
+                operationRecords: [],
+                numbers: Array.from({ length: 49 }, (_, i) => ({
+                    number: (i + 1).toString().padStart(2, '0'),
+                    amount: 0,
+                    odds: 0,
+                })),
+                status: 'active'
+            } as GameSession
         },
 
         // 创建新场次
