@@ -155,12 +155,12 @@ onBeforeUnmount(() => {
   }
 
   .content-wrapper {
-    padding: 12px;
+    padding: 0px;
   }
 
   .content-container {
     border-radius: 8px;
-    padding: 12px;
+    padding: 0px;
   }
 }
 

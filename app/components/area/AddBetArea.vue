@@ -905,7 +905,7 @@ const resetForm = () => {
 
 @media (max-width: 480px) {
     .head-selector .quick-btn-group {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
@@ -918,13 +918,13 @@ const resetForm = () => {
 
 @media (max-width: 768px) {
     .special-selector .quick-btn-group {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
 @media (max-width: 480px) {
     .special-selector .quick-btn-group {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
@@ -1075,7 +1075,7 @@ const resetForm = () => {
 
 /* 提交按钮 */
 .submit-btn {
-    width: 100%;
+    width: 60%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1200,6 +1200,7 @@ const resetForm = () => {
     .quick-bet-buttons {
         grid-template-columns: repeat(4, 1fr);
     }
+    
 }
 
 @media (max-width: 480px) {
@@ -1221,7 +1222,7 @@ const resetForm = () => {
     }
 
     .submit-btn {
-        padding: 0.875rem;
+        padding: 0.175rem;
     }
 }
 </style>

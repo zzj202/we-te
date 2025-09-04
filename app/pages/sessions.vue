@@ -139,7 +139,7 @@ const viewSessionDetails = async (session) => {
       throw new Error('无效的场次ID')
     }
     await gameStore.setCurrentSession(session.id)
-    await router.push('/operation')
+    await router.push('/dashboard')
   } catch (error) {
     console.error('查看场次详情失败:', error)
     const errorMessage = error.message.includes('不存在')

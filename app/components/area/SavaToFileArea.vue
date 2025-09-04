@@ -79,7 +79,8 @@ const exportLocalStorage = () => {
 
       // 转换为 JSON 字符串
       const jsonData = JSON.stringify(localStorageData, null, 2);
-      
+    
+      console.log(jsonData)
       // 创建 Blob 对象
       const blob = new Blob([jsonData], { type: 'application/json' });
       

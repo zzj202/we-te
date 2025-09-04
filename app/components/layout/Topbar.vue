@@ -11,9 +11,9 @@
         <span class="current-session">
           场次：{{ gameStore.currentSession.name }}
         </span>
-        <span class="total-amount" v-if="gameStore.currentSession.totalAmount">
+        <!-- <span class="total-amount" v-if="gameStore.currentSession.totalAmount">
           总金额：{{ formatAmount(gameStore.currentSession.totalAmount) }}
-        </span>
+        </span> -->
       </div>
     </div>
     <div class="right-section">
@@ -128,11 +128,13 @@ const formatAmount = (amount) => {
   padding: 4px 8px;
   background-color: #f3f4f6;
   border-radius: 4px;
+
 }
 
 .total-amount {
   background-color: #e6f7ff;
-  color: #1890ff;
+  color: #ff0000;
+  font-weight: bold;
 }
 
 .right-section {
@@ -187,8 +189,30 @@ const formatAmount = (amount) => {
 
   .current-session,
   .total-amount {
-    font-size: 12px;
+    font-size: 15px;
     padding: 2px 6px;
+  }
+
+  .topbar {
+    --topbar-height: 40px;
+    /* --topbar-height: 60px;
+  --primary-color: #3b82f6;
+  --text-color: #1f2937;
+  --secondary-text: #4b5563;
+  --badge-color: #ef4444;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  height: var(--topbar-height);
+  background-color: white;
+  box-shadow: var(--shadow);
+  z-index: 50;
+  position: sticky;
+  top: 0; */
   }
 }
 </style>
