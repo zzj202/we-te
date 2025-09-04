@@ -10,7 +10,7 @@ export const useGameStore = defineStore('game', {
     state: () => ({
         sessions: [] as GameSession[],
         currentSession: {
-            id: '0',
+            id: '1',
             name: '默认场次',
             flatCodes: [],
             specialCode: '',
@@ -58,9 +58,9 @@ export const useGameStore = defineStore('game', {
                 loadingBar.start()
                 const kvAPI = userKvAPI()
                 const sessions = await kvAPI.get('game:sessions')
-                if (sessions && sessions.length) {
+                if (sessions && sessions.length > 0) {
                     this.sessions = sessions
-                    this.currentSession = this.currentSession.id ? this.getSessionById(this.currentSession.id) : sessions[0]
+                    this.currentSession = this.getSessionById(this.currentSession.id) ? this.getSessionById(this.currentSession.id) : sessions[0]
                 }
             } catch (error) {
                 this.error = '加载场次数据失败'
@@ -109,6 +109,7 @@ export const useGameStore = defineStore('game', {
                 })),
                 status: 'active'
             } as GameSession
+            this.sessions.push(this.currentSession)
         },
 
         // 创建新场次
@@ -284,7 +285,7 @@ export const useGameStore = defineStore('game', {
                 };
                 this.currentSession.operationRecords.push(operationRecord);
                 await this.saveCurrentSession()  //更新session  和 session:id
-                message.success('加注成功')
+                message.success(`加注成功!总金额${totalAmount}元`)
                 // 返回类型与输入类型一致
                 return Array.isArray(addBetLines) ? betRecords : betRecords[0];
             } catch (error) {
@@ -409,12 +410,11 @@ export const useGameStore = defineStore('game', {
             try {
                 const kvAPI = userKvAPI()
                 await kvAPI.del(`game:session:${id}`)
-
                 this.sessions = this.sessions.filter(s => s.id !== id)
-                if (this.currentSession.id === id) {
+                if (this.currentSession.id === id && this.sessions.length == 0) {
                     this.currentSession = {
-                        id: '',
-                        name: '',
+                        id: '1',
+                        name: '默认',
                         numbers: Array.from({ length: 49 }, (_, i) => ({
                             number: (i + 1).toString().padStart(2, '0'),
                             amount: 0,
@@ -431,8 +431,9 @@ export const useGameStore = defineStore('game', {
                         operationRecords: [],
                         status: 'active'
                     }
+                } else {
+                    this.currentSession = this.sessions[0] as GameSession
                 }
-
                 await kvAPI.set('game:sessions', this.sessions)
             } catch (error) {
                 this.error = '删除场次失败'

@@ -117,7 +117,7 @@ const importLocalStorage = () => {
             }
             if (jsonData.game && JSON.parse(jsonData.game)) {
                 const tmp = JSON.parse(jsonData.game)
-                gameStore.currentSession = tmp.currentSession
+                gameStore.currentSession = tmp.sessions[0]
                 gameStore.sessions = tmp.sessions
                 message.warning(`导入成功！共有${tmp.sessions.length}个场次。请覆盖到远程使用方能正常使用`)
             } else if (JSON.stringify(jsonData) == '{}') {

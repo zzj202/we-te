@@ -11,9 +11,9 @@
         <span class="current-session">
           场次：{{ gameStore.currentSession.name }}
         </span>
-        <!-- <span class="total-amount" v-if="gameStore.currentSession.totalAmount">
+        <span class="total-amount" v-if="gameStore.currentSession.totalAmount">
           总金额：{{ formatAmount(gameStore.currentSession.totalAmount) }}
-        </span> -->
+        </span>
       </div>
     </div>
     <div class="right-section">
@@ -116,7 +116,6 @@ const formatAmount = (amount) => {
 }
 
 .session-info {
-  display: flex;
   gap: 12px;
   align-items: center;
 }
@@ -125,7 +124,7 @@ const formatAmount = (amount) => {
 .total-amount {
   font-size: 14px;
   color: var(--secondary-text);
-  padding: 4px 8px;
+  padding: 5px 8px;
   background-color: #f3f4f6;
   border-radius: 4px;
 
@@ -169,6 +168,10 @@ const formatAmount = (amount) => {
 }
 
 @media (max-width: 768px) {
+  .total-amount {
+    display: none
+  }
+
   .topbar {
     padding: 0 16px;
   }

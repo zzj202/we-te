@@ -8,6 +8,9 @@
       <div class="button-container">
         <button class="column-btn" @click="changeCol">{{ col }}列</button>
       </div>
+      <div class="button-container">
+        <button class="column-load-btn" @click="load">刷新数据</button>
+      </div>
     </div>
 
     <!-- 金额排序展示 -->
@@ -47,9 +50,12 @@
 <script setup>
 import { computed } from 'vue';
 import CardItem from '../item/CardItem.vue';
+import { createDiscreteApi } from 'naive-ui'
 
-
-const router = useRouter()
+const { dialog, message, loadingBar } = createDiscreteApi(
+  ['dialog', 'message', 'loadingBar']
+)
+const gameStore = useGameStore()
 const col = ref(1)
 const props = defineProps({
   data: {
@@ -134,6 +140,22 @@ const groupedByZodiac = computed(() => {
 const changeCol = () => {
   col.value = col.value === 1 ? 2 : 1
 }
+const load = async () => {
+  const oldS = gameStore.currentSession
+  try {
+    await gameStore.loadSessions()
+    const newS = gameStore.currentSession
+    console.log(oldS)
+    if (oldS.totalAmount == newS.totalAmount) {
+      message.success('当前数据金额未发生更改',{ duration: 1000 })
+    } else {
+      message.success(`数据刷新成功金额由${oldS.totalAmount}➡️${newS.totalAmount}`, { duration: 5000 })
+    }
+
+  } catch (error) {
+
+  }
+}
 const zodiacColumns = computed(() => {
   const sortedZodiacs = Object.keys(zodiacTotals.value);
   const columnCount = col.value; // 两列布局
@@ -186,7 +208,7 @@ const zodiacColumns = computed(() => {
   /* 将按钮推到最右边 */
 }
 
-.column-add-btn {
+.column-load-btn {
   padding: 2px 4px;
   border-radius: 4px;
   border: none;
