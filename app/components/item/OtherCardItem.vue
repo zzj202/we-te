@@ -82,32 +82,32 @@ const getCardClass = (amount) => {
 /* 金额颜色样式 - 明显渐变色方案 */
 .zero .card-amount {
     color: #acacac;  /* 亮绿色（低金额） */
-    font-size: 13px;
+    font-size: 12px;
 }
 .low .card-amount {
     color: #8f8888;  /* 亮绿色（低金额） */
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
 .medium .card-amount {
     color: #f1c40f;  /* 亮黄色（中间值） */
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .high .card-amount {
     color: #d35400;  /* 深橙色 */
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .very-high .card-amount {
     color: #e74c3c;  /* 亮红色 */
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .super-high .card-amount {
     color: #c0392b;  /* 深红色 */
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .ultra-high .card-amount {
