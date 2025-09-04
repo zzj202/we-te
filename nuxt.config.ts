@@ -21,6 +21,11 @@ export default defineNuxtConfig({
   },
   modules: ['@pinia/nuxt', 'dayjs-nuxt', 'pinia-plugin-persistedstate/nuxt',],
   build: {
-    transpile: ['naive-ui']
+    transpile: ['naive-ui','vueuc']
+  },
+  vite: {
+    optimizeDeps: {
+      include: ['vueuc']
+    }
   }
 })
