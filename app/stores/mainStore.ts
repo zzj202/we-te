@@ -7,6 +7,7 @@ export const useMainStore = defineStore('main', {
     state: () => ({
         addBetString: '' as string,
         addBetLines: [] as BetLine[],
+        userBrowser:'' as String
     }),
 
     getters: {
@@ -119,6 +120,10 @@ export const useMainStore = defineStore('main', {
         reset() {
             this.addBetString = ''
             this.addBetLines = []
+        },
+
+        setUserBroswer(broswer:string){
+            this.userBrowser=broswer
         }
     }
 })

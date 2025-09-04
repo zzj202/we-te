@@ -17,8 +17,8 @@
     <div class="section">
       <div class="card-grid">
         <div v-for="(item, index) in amountSortedData" :key="'amount-' + index">
-          <ItemPhoneCardItem :number="item.number.toString().padStart(2, '0')" :zodiac="getZodiac(item.number)"
-            :amount="item.amount"></ItemPhoneCardItem>
+          <WeChatCardItem :number="item.number.toString().padStart(2, '0')" :zodiac="getZodiac(item.number)"
+            :amount="item.amount"></WeChatCardItem>
         </div>
       </div>
     </div>
@@ -31,12 +31,12 @@
             <div class="zodiac-row" v-for="zodiac in column" :key="zodiac">
               <div class="zodiac-cards">
                 <div>
-                  <div style="font-size: 16px;font-weight: bold;">{{ zodiac }}</div>
+                  <div style="font-size: 26px;font-weight: bold;">{{ zodiac }}</div>
                   <div class="zodiac-total">{{ zodiacTotals[zodiac] }}</div>
                 </div>
                 <div v-for="(item, itemIndex) in groupedByZodiac[zodiac]" :key="'zodiac-item-' + itemIndex">
-                  <ItemPhoneCardItem :number="item.number.toString().padStart(2, '0')" :zodiac="getZodiac(item.number)"
-                    :amount="item.amount"></ItemPhoneCardItem>
+                  <WeChatCardItem :number="item.number.toString().padStart(2, '0')"
+                    :zodiac="getZodiac(item.number)" :amount="item.amount"></WeChatCardItem>
                 </div>
               </div>
             </div>
@@ -49,8 +49,9 @@
 
 <script setup>
 import { computed } from 'vue';
-import CardItem from '../item/CardItem.vue';
 import { createDiscreteApi } from 'naive-ui'
+
+import WeChatCardItem from '../item/WeChatCardItem.vue';
 
 const { dialog, message, loadingBar } = createDiscreteApi(
   ['dialog', 'message', 'loadingBar']
@@ -147,7 +148,7 @@ const load = async () => {
     const newS = gameStore.currentSession
     console.log(oldS)
     if (oldS.totalAmount == newS.totalAmount) {
-      message.success('当前数据金额未发生更改',{ duration: 1000 })
+      message.success('当前数据金额未发生更改', { duration: 1000 })
     } else {
       message.success(`数据刷新成功金额由${oldS.totalAmount}➡️${newS.totalAmount}`, { duration: 5000 })
     }
@@ -198,7 +199,7 @@ const zodiacColumns = computed(() => {
   /* 占据剩余空间 */
   text-align: center;
   /* 文本居中 */
-  font-size: 15px;
+  font-size: 30px;
   font-weight: bold;
   color: #4263eb;
 }
@@ -214,7 +215,7 @@ const zodiacColumns = computed(() => {
   border: none;
   background-color: #c0c0c0;
   color: white;
-  font-size: 14px;
+  font-size: 30px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -227,7 +228,7 @@ const zodiacColumns = computed(() => {
   border: none;
   background-color: #409eff;
   color: white;
-  font-size: 14px;
+  font-size: 30px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -279,7 +280,7 @@ const zodiacColumns = computed(() => {
 .zodiac-total {
   color: #4263eb;
   font-weight: 600;
-  font-size: 8px;
+  font-size: 15px;
   margin-bottom: 1px;
 }
 
