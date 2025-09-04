@@ -50,7 +50,10 @@ const getCardClass = (amount) => {
 .card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: #8b0000;
+
 }
+
 
 .card-header {
     display: flex;
@@ -61,9 +64,17 @@ const getCardClass = (amount) => {
     color: #6c757d;
 }
 
-.card-number,
+.card-number {
+    padding: 2px 6px;
+    font-weight: 600;
+}
+
 .card-zodiac {
     font-weight: 600;
+    color: #666;
+    background-color: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
 }
 
 .card-body {
@@ -78,42 +89,49 @@ const getCardClass = (amount) => {
     text-align: center;
 }
 
-/* 金额颜色样式 */
 /* 金额颜色样式 - 明显渐变色方案 */
 .zero .card-amount {
-    color: #acacac;  /* 亮绿色（低金额） */
+    color: #acacac;
+    /* 亮绿色（低金额） */
     font-size: 12px;
 }
+
 .low .card-amount {
-    color: #8f8888;  /* 亮绿色（低金额） */
+    color: #8f8888;
+    /* 亮绿色（低金额） */
     font-size: 13px;
 }
 
 
 .medium .card-amount {
-    color: #f1c40f;  /* 亮黄色（中间值） */
+    color: #f1c40f;
+    /* 亮黄色（中间值） */
     font-size: 14px;
 }
 
 .high .card-amount {
-    color: #d35400;  /* 深橙色 */
+    color: #d35400;
+    /* 深橙色 */
     font-size: 14px;
 }
 
 .very-high .card-amount {
-    color: #e74c3c;  /* 亮红色 */
+    color: #e74c3c;
+    /* 亮红色 */
     font-size: 15px;
 }
 
 .super-high .card-amount {
-    color: #c0392b;  /* 深红色 */
+    color: #c0392b;
+    /* 深红色 */
     font-size: 15px;
 }
 
 .ultra-high .card-amount {
-    color: #8b0000;  /* 暗红色（最高级别） */
+    color: #8b0000;
+    /* 暗红色（最高级别） */
     font-size: 16px;
-    font-weight: bold;  /* 添加粗体强调 */
+    font-weight: bold;
+    /* 添加粗体强调 */
 }
-
 </style>

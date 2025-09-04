@@ -131,15 +131,15 @@ const openEditSession = (session) => {
   isEditMode.value = true
   showSessionDialog.value = true
 }
-
 // 查看详情
 const viewSessionDetails = async (session) => {
   try {
     if (!session?.id) {
       throw new Error('无效的场次ID')
     }
+    console.log(session)
     await gameStore.setCurrentSession(session.id)
-    await router.push('/dashboard')
+    await router.push(`/dashboard?sessionId=${session.id}`)
   } catch (error) {
     console.error('查看场次详情失败:', error)
     const errorMessage = error.message.includes('不存在')

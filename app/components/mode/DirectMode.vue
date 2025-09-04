@@ -54,17 +54,12 @@ const errorMessage = ref('')
 
 // 处理输入值
 const inputValue = computed(() => {
-    resetValidation()
+    errorMessage.value = '';
     const result = mainStore.getLineInputValue(props.index) || '';
     editableValue.value = result
     return result || '';
 });
 
-// 重置验证状态
-const resetValidation = () => {
-    errorMessage.value = '';
-
-};
 const updateInputValue = () => {
     mainStore.updateBetLine(props.index, editableValue.value);
 };
@@ -76,17 +71,21 @@ const allNumbers = computed(() => {
 
 const selectedNumbers = computed(() => {
     const inputValueTmp = inputValue.value.split(/共|合计|共计/)[0];
-    errorMessage.value = ''
     if (!inputValueTmp.match(/\d+/g)) {
-        errorMessage.value = '无数据，请清空输入';
+        if (inputValue.value != '') {
+            errorMessage.value = '无数据，请清空输入';
+        }
+        mainStore.setSelectNumbers(props.index, []);
         return []
     }
     if (inputValueTmp.match(/\d+/g).length == 1) {
         errorMessage.value = '无效，有效数据只有一个';
+        mainStore.setSelectNumbers(props.index, []);
         return []
     }
     if (amount.value == 0) {
         errorMessage.value = '无效金额为0';
+        mainStore.setSelectNumbers(props.index, []);
         return []
     }
     const result = inputValueTmp.split(/个|各|包|个包|各包|各数|个数|个号|个码|各码/)[0];
@@ -94,20 +93,27 @@ const selectedNumbers = computed(() => {
         const parsedNum = parseInt(num, 10);
         return parsedNum < 10 ? `0${parsedNum}` : `${parsedNum}`;
     }) || [];
+    mainStore.setSelectNumbers(props.index, matches);
     return matches
 });
 
 const amount = computed(() => {
     const inputValueTmp = inputValue.value.split(/共|合计|共计/)[0];
-    if (!inputValueTmp) return 0;
+    if (!inputValueTmp) {
+        mainStore.setAmount(props.index, 0);
+        return 0;
+    }
     const result = inputValueTmp.split(/个|各|包|每/);
     if (result.length === 2) {
         const numbers = result[1].match(/\d+/g);
         if (!numbers || numbers.length === 0 || numbers.length > 1) {
+            mainStore.setAmount(props.index, 0);
             return 0;
         }
+        mainStore.setAmount(props.index, parseInt(numbers[0], 10));
         return parseInt(numbers[0], 10);
     }
+    mainStore.setAmount(props.index, 0);
     return 0;
 });
 
@@ -125,29 +131,19 @@ const invalidNumbers = computed(() => {
 const hasInvalidNumbers = computed(() => invalidNumbers.value.length > 0);
 
 const isValid = computed(() => {
-    if (amount.value != 0 && selectedNumbers.value.length == 0) {
+    if (inputValue.value === '' && amount.value == 0 && selectedNumbers.value.length == 0) {
+        return true
+    } else if (inputValue.value !== '' && amount.value != 0 && selectedNumbers.value.length != 0) {
+        return true
+    } else {
         return false
     }
-    if (inputValue.value !== '' && amount.value == 0) return false
-    if (inputValue.value == '') return true
-    return invalidNumbers.value.length === 0 && amount.value !== 0;
 });
 
-
-watch(() => [isValid.value, amount.value, selectedNumbers.value, inputValue.value], (newVal) => {
-    if (newVal[3]) {
-        mainStore.setInputValue(props.index, inputValue.value);
-    }
-    if (newVal[2]) {
-        mainStore.setSelectNumbers(props.index, selectedNumbers.value);
-    }
-    if (newVal[1]) {
-        mainStore.setAmount(props.index, amount.value);
-    }
+watch(() => [isValid.value], (newVal) => {
     if (newVal[0]) {
         mainStore.setBetLineValid(props.index);
         mainStore.setType(props.index, '直选');
-        errorMessage.value = '';
     } else {
         mainStore.setBetLineInvalid(props.index);
     }

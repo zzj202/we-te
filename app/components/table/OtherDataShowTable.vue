@@ -5,16 +5,28 @@
       <div class="total-amount">
         总金额: {{ totalAmount }}
       </div>
-      <div class="button-container">
+      <div v-if="showType == 'new'" class="button-container">
         <button class="column-btn" @click="changeCol">{{ col }}列</button>
       </div>
       <div class="button-container">
         <button class="column-load-btn" @click="load">刷新数据</button>
       </div>
+      <div class="button-container">
+        <button class="column-change-btn" @click="changeShowType()">切换样式</button>
+      </div>
+      <div class="button-container">
+        <button class="column-past-btn" @click="checkPast()">{{ pastShow ? '关闭往期' : '打开往期' }}</button>
+      </div>
+    </div>
+    <div v-if="pastShow">
+      <PastCarShowTable></PastCarShowTable>
+      <div class="button-container">
+        <button class="column-past-btn" @click="checkPast()">关闭往期</button>
+      </div>
     </div>
 
     <!-- 金额排序展示 -->
-    <div class="section">
+    <div v-if="showType == 'new'" class="section">
       <div class="card-grid">
         <div v-for="(item, index) in amountSortedData" :key="'amount-' + index">
           <OtherCardItem :number="item.number.toString().padStart(2, '0')" :zodiac="getZodiac(item.number)"
@@ -24,9 +36,9 @@
     </div>
 
     <!-- 生肖展示 -->
-    <div class="section">
+    <div v-if="showType == 'new'" class="section">
       <div class="zodiac-grid">
-        <div class="zodiac-container">
+        <div class="zodiac-container-show">
           <div class="zodiac-column" v-for="(column, colIndex) in zodiacColumns" :key="'zodiac-col-' + colIndex">
             <div class="zodiac-row" v-for="zodiac in column" :key="zodiac">
               <div class="zodiac-cards">
@@ -44,6 +56,10 @@
         </div>
       </div>
     </div>
+
+    <div v-if="showType == 'old'">
+      <OldDataShowTable></OldDataShowTable>
+    </div>
   </div>
 </template>
 
@@ -51,12 +67,15 @@
 import { computed } from 'vue';
 import { createDiscreteApi } from 'naive-ui'
 import OtherCardItem from '../item/OtherCardItem.vue';
-
+import OldDataShowTable from './OldDataShowTable.vue';
+import PastCarShowTable from './PastCarShowTable.vue';
 const { dialog, message, loadingBar } = createDiscreteApi(
   ['dialog', 'message', 'loadingBar']
 )
 const gameStore = useGameStore()
 const col = ref(1)
+const showType = ref('old')
+const pastShow = ref(false)
 const props = defineProps({
   data: {
     type: Array,
@@ -64,6 +83,7 @@ const props = defineProps({
     default: () => []
   }
 });
+
 
 // 计算总金额
 const totalAmount = computed(() => {
@@ -149,12 +169,17 @@ const load = async () => {
     if (oldS.totalAmount == newS.totalAmount) {
       message.success('当前数据金额未发生更改', { duration: 1000 })
     } else {
-      message.success(`数据刷新成功金额由${oldS.totalAmount}➡️${newS.totalAmount}`, { duration: 5000 })
+      message.success(`数据刷新成功金额由${oldS.totalAmount}➡️${newS.totalAmount}元，增加${newS.totalAmount - oldS.totalAmount}元`, { duration: 5000 })
     }
 
   } catch (error) {
-
   }
+}
+const changeShowType = () => {
+  showType.value = showType.value == 'old' ? 'new' : 'old'
+}
+const checkPast = () => {
+  pastShow.value = !pastShow.value
 }
 const zodiacColumns = computed(() => {
   const sortedZodiacs = Object.keys(zodiacTotals.value);
@@ -198,7 +223,7 @@ const zodiacColumns = computed(() => {
   /* 占据剩余空间 */
   text-align: center;
   /* 文本居中 */
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
   color: #4263eb;
 }
@@ -214,9 +239,35 @@ const zodiacColumns = computed(() => {
   border: none;
   background-color: #c0c0c0;
   color: white;
-  font-size: 18px;
+  font-size: 22px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin: 2px;
+}
+
+.column-change-btn {
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: none;
+  background-color: #07d490;
+  color: white;
+font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
+  transition: all 0.3s ease;
+  margin: 2px;
+}
+
+.column-past-btn {
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: none;
+  background-color: #0a07d4;
+  color: white;
+font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
   transition: all 0.3s ease;
   margin: 2px;
 }
@@ -257,7 +308,7 @@ const zodiacColumns = computed(() => {
   width: 100%;
 }
 
-.zodiac-container {
+.zodiac-container-show {
   display: flex;
   gap: 2px;
 }

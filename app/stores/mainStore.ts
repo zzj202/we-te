@@ -84,7 +84,6 @@ export const useMainStore = defineStore('main', {
         updateBetLine(index: number, inputValue: string) {
             const line = this.getAddBetLine(index) as BetLine
             line.inputValue = inputValue
-
             // 更新addBetString
             const lines = [...this.addBetLines]
             const targetIndex = lines.findIndex(l => l.index === index) as number

@@ -1,23 +1,19 @@
 <template>
-  <aside 
-    class="sidebar" 
-    :class="{ 'collapsed': isCollapsed, 'expanded': !isCollapsed }"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
-  >
+  <aside class="sidebar" :class="{ 'collapsed': isCollapsed, 'expanded': !isCollapsed }" @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave">
     <div class="logo-area">
       <div class="logo" @click="$emit('toggle')">
         <transition name="logo-text" mode="out-in">
-          <span v-if="!isCollapsed" key="full">六合彩管理系统</span>
+          <span v-if="!isCollapsed" key="full">小鸡毛与小小白</span>
           <span v-else key="short" class="lottery-symbol">🎰</span>
         </transition>
       </div>
     </div>
-    
+
     <div class="nav-container">
-      <NavMenu :menuItems="menuItems"  :is-collapsed="isCollapsed" />
+      <NavMenu :menuItems="menuItems" :is-collapsed="isCollapsed" />
     </div>
-    
+
     <div class="sidebar-footer">
       <UserInfo :is-collapsed="isCollapsed" />
     </div>
@@ -68,7 +64,7 @@ const handleMouseLeave = () => {
   --sidebar-highlight: #3b82f6;
   --sidebar-border-color: rgba(255, 255, 255, 0.1);
   --sidebar-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   width: var(--sidebar-width);
   height: 100vh;
   background: linear-gradient(180deg, var(--sidebar-bg-start), var(--sidebar-bg-end));
@@ -200,7 +196,7 @@ const handleMouseLeave = () => {
     height: auto;
     position: relative;
   }
-  
+
   .collapse-btn {
     display: none;
   }

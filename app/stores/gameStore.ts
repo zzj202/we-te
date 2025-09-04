@@ -77,7 +77,6 @@ export const useGameStore = defineStore('game', {
             const kvAPI = userKvAPI()
             try {
                 loadingBar.start()
-                await kvAPI.set(`game:session:${this.currentSession.id}`, this.currentSession)
                 await kvAPI.set('game:sessions', this.sessions)
             } catch (error) {
                 this.error = '保存数据失败'
@@ -121,8 +120,6 @@ export const useGameStore = defineStore('game', {
                 newSession.createdAt = new Date().toISOString()
                 newSession.updatedAt = new Date().toISOString()
                 const kvAPI = userKvAPI()
-                await kvAPI.set(`game:session:${newSession.id}`, newSession)
-
                 this.sessions.unshift(newSession)
                 this.currentSession = newSession
                 await kvAPI.set('game:sessions', this.sessions)
@@ -141,18 +138,7 @@ export const useGameStore = defineStore('game', {
             this.loading = true
             this.error = null
             try {
-                const kvAPI = userKvAPI()
-                const session = await kvAPI.get(`game:session:${id}`)
-                if (!session) throw new Error('场次不存在')
-
-                const index = this.sessions.findIndex(s => s.id === id)
-                if (index !== -1) {
-                    this.sessions[index] = session
-                } else {
-                    this.sessions.push(session)
-                }
-
-                this.currentSession = session
+                this.currentSession =this.getSessionById(id) as GameSession
             } catch (error) {
                 this.error = '设置当前场次失败'
                 console.error(error)
@@ -368,7 +354,6 @@ export const useGameStore = defineStore('game', {
                     this.sessions.push(JSON.parse(JSON.stringify(this.currentSession)))
                 }
                 console.log(this.currentSession)
-                await kvAPI.set(`game:session:${this.currentSession.id}`, this.currentSession)
                 await kvAPI.set('game:sessions', this.sessions)
             } catch (error) {
                 this.error = '保存场次失败'
@@ -391,7 +376,6 @@ export const useGameStore = defineStore('game', {
                 } else {
                     this.sessions.push(JSON.parse(JSON.stringify(session)))
                 }
-                await kvAPI.set(`game:session:${session.id}`, session)
                 await kvAPI.set('game:sessions', this.sessions)
             } catch (error) {
                 this.error = '保存场次失败'

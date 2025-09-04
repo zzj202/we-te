@@ -124,12 +124,13 @@ const confirm = () => {
     if (canConfirm) {
         dialog.success({
             title: '投注',
-            content: `批量投注${mainStore.addBetLines.length}条，总金额为${mainStore.addBetLines.reduce((total, item) => total + item.totalAmount, 0)}元`,
+            content: `批量投注${mainStore.addBetLines.filter(line => line.amount > 0).length}条，总金额为${mainStore.addBetLines.reduce((total, item) => total + item.totalAmount, 0)}元`,
             positiveText: '确定',
             negativeText: '取消',
             maskClosable: false,
             onPositiveClick: () => {
                 gameStore.place(mainStore.addBetLines)
+                console.log(mainStore.addBetLines)
                 message.success('已提交')
             },
             onNegativeClick: () => {

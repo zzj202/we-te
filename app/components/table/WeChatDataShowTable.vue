@@ -5,16 +5,19 @@
       <div class="total-amount">
         总金额: {{ totalAmount }}
       </div>
-      <div class="button-container">
+      <div v-if="showType == 'new'" class="button-container">
         <button class="column-btn" @click="changeCol">{{ col }}列</button>
       </div>
       <div class="button-container">
         <button class="column-load-btn" @click="load">刷新数据</button>
       </div>
+      <div class="button-container">
+        <button class="column-change-btn" @click="changeShowType()">切换样式</button>
+      </div>
     </div>
 
     <!-- 金额排序展示 -->
-    <div class="section">
+    <div v-if="showType == 'new'" class="section">
       <div class="card-grid">
         <div v-for="(item, index) in amountSortedData" :key="'amount-' + index">
           <WeChatCardItem :number="item.number.toString().padStart(2, '0')" :zodiac="getZodiac(item.number)"
@@ -22,27 +25,29 @@
         </div>
       </div>
     </div>
-
     <!-- 生肖展示 -->
-    <div class="section">
+    <div v-if="showType == 'new'" class="section">
       <div class="zodiac-grid">
-        <div class="zodiac-container">
+        <div class="zodiac-container-show">
           <div class="zodiac-column" v-for="(column, colIndex) in zodiacColumns" :key="'zodiac-col-' + colIndex">
             <div class="zodiac-row" v-for="zodiac in column" :key="zodiac">
               <div class="zodiac-cards">
                 <div>
-                  <div style="font-size: 26px;font-weight: bold;">{{ zodiac }}</div>
+                  <div style="font-size: 22px;font-weight: bold;">{{ zodiac }}</div>
                   <div class="zodiac-total">{{ zodiacTotals[zodiac] }}</div>
                 </div>
                 <div v-for="(item, itemIndex) in groupedByZodiac[zodiac]" :key="'zodiac-item-' + itemIndex">
-                  <WeChatCardItem :number="item.number.toString().padStart(2, '0')"
-                    :zodiac="getZodiac(item.number)" :amount="item.amount"></WeChatCardItem>
+                  <WeChatCardItem :number="item.number.toString().padStart(2, '0')" :zodiac="getZodiac(item.number)"
+                    :amount="item.amount"></WeChatCardItem>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="showType == 'old'">
+      <OldDataShowTable></OldDataShowTable>
     </div>
   </div>
 </template>
@@ -52,10 +57,14 @@ import { computed } from 'vue';
 import { createDiscreteApi } from 'naive-ui'
 
 import WeChatCardItem from '../item/WeChatCardItem.vue';
+import OldDataShowTable from '~/components/table/OldDataShowTable.vue';
 
 const { dialog, message, loadingBar } = createDiscreteApi(
   ['dialog', 'message', 'loadingBar']
 )
+
+
+const showType = ref('old')
 const gameStore = useGameStore()
 const col = ref(1)
 const props = defineProps({
@@ -157,6 +166,9 @@ const load = async () => {
 
   }
 }
+const changeShowType = () => {
+  showType.value = showType.value == 'old' ? 'new' : 'old'
+}
 const zodiacColumns = computed(() => {
   const sortedZodiacs = Object.keys(zodiacTotals.value);
   const columnCount = col.value; // 两列布局
@@ -222,6 +234,19 @@ const zodiacColumns = computed(() => {
   margin: 2px;
 }
 
+.column-change-btn {
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: none;
+  background-color: #08d445;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(43, 58, 139, 0.1);
+  transition: all 0.3s ease;
+  margin: 2px;
+}
+
 .column-btn {
   padding: 2px 4px;
   border-radius: 4px;
@@ -245,7 +270,7 @@ const zodiacColumns = computed(() => {
 }
 
 .section {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 }
 
 .card-grid {
@@ -258,7 +283,7 @@ const zodiacColumns = computed(() => {
   width: 100%;
 }
 
-.zodiac-container {
+.zodiac-container-show {
   display: flex;
   gap: 2px;
 }
@@ -280,7 +305,7 @@ const zodiacColumns = computed(() => {
 .zodiac-total {
   color: #4263eb;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 13px;
   margin-bottom: 1px;
 }
 
