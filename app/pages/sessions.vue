@@ -138,6 +138,7 @@ const viewSessionDetails = async (session) => {
       throw new Error('无效的场次ID')
     }
     console.log(session)
+    await gameStore.loadSessions()
     await gameStore.setCurrentSession(session.id)
     await router.push(`/dashboard?sessionId=${session.id}`)
   } catch (error) {
@@ -171,7 +172,7 @@ const confirmDeleteSession = (sessionId) => {
 // 保存场次
 const saveSession = (sessionData) => {
   if (isEditMode.value) {
-    
+
     gameStore.saveSession(sessionData)
     message.success('场次更新成功')
   } else {

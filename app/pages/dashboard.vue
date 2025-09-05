@@ -25,7 +25,7 @@ const gameStore = useGameStore()
 
 
 const dataNumbers = computed(() => {
-    return gameStore.currentSession.numbers
+    return gameStore.currentSession?.numbers || []
 })
 
 onBeforeMount(async () => {

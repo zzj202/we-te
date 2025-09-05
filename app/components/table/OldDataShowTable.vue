@@ -34,7 +34,9 @@ const store = useMainStore()
 
 
 const gameStore = useGameStore()
-const numbers = ref(gameStore.currentSession.numbers)
+const numbers = computed(() => {
+    return gameStore.currentSession.numbers
+})
 
 // const zodiacData = computed(() => store.currentZodiacData)
 
