@@ -1,6 +1,6 @@
 <template>
     <div v-if="gameStore.currentSession.numbers" style="max-width: 1200px; margin: 0 auto; text-align: center;">
-        <OtherDataShowTable :data="gameStore.currentSession.numbers"></OtherDataShowTable>
+        <OtherDataShowTable :data="dataNumbers"></OtherDataShowTable>
         <!-- <div v-if="mainStore.userBrowser === 'WeChat'">
             <WeChatDataShowTable :data="gameStore.currentSession.numbers"></WeChatDataShowTable>
         </div>
@@ -22,15 +22,19 @@ const { dialog, message, loadingBar } = createDiscreteApi(
 )
 
 const gameStore = useGameStore()
-const mainStore = useMainStore()
 
 
-onBeforeMount(() => {
+const dataNumbers = computed(() => {
+    return gameStore.currentSession.numbers
+})
+
+onBeforeMount(async () => {
     const route = useRoute()
     // 获取查询参数 (如 ?search=xxx)
     const sessionId = route.query.sessionId
     console.log(sessionId)
     if (sessionId) {
+        await gameStore.loadSessions()
         gameStore.setCurrentSession(sessionId).then(() => {
             console.log('场次切换')
         }).catch(() => {
