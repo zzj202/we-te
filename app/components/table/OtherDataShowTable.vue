@@ -43,7 +43,7 @@
             <div class="zodiac-row" v-for="zodiac in column" :key="zodiac">
               <div class="zodiac-cards">
                 <div>
-                  <div style="font-size: 20px;font-weight: bold;">{{ zodiac }}</div>
+                  <div style="font-size: 22px;font-weight: bold;">{{ zodiac }}</div>
                   <div class="zodiac-total">{{ zodiacTotals[zodiac] }}</div>
                 </div>
                 <div v-for="(item, itemIndex) in groupedByZodiac[zodiac]" :key="'zodiac-item-' + itemIndex">
@@ -330,7 +330,7 @@ font-size: 22px;
 .zodiac-total {
   color: #4263eb;
   font-weight: 600;
-  font-size: 10px;
+  font-size: 12px;
   margin-bottom: 1px;
 }
 

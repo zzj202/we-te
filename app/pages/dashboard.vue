@@ -1,5 +1,5 @@
 <template>
-    <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+    <div v-if="gameStore.currentSession.numbers" style="max-width: 1200px; margin: 0 auto; text-align: center;">
         <OtherDataShowTable :data="gameStore.currentSession.numbers"></OtherDataShowTable>
         <!-- <div v-if="mainStore.userBrowser === 'WeChat'">
             <WeChatDataShowTable :data="gameStore.currentSession.numbers"></WeChatDataShowTable>
@@ -14,7 +14,6 @@
 
 <script setup>
 import OtherDataShowTable from '~/components/table/OtherDataShowTable.vue';
-import WeChatDataShowTable from '~/components/table/WeChatDataShowTable.vue';
 
 import { createDiscreteApi } from 'naive-ui'
 
