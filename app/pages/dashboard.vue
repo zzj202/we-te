@@ -25,7 +25,7 @@ const gameStore = useGameStore()
 const mainStore = useMainStore()
 
 
-onMounted(() => {
+onBeforeMount(() => {
     const route = useRoute()
     // 获取查询参数 (如 ?search=xxx)
     const sessionId = route.query.sessionId
