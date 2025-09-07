@@ -70,9 +70,18 @@ import { createDiscreteApi } from 'naive-ui'
 import OtherCardItem from '../item/OtherCardItem.vue';
 import OldDataShowTable from './OldDataShowTable.vue';
 import PastCarShowTable from './PastCarShowTable.vue';
+
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/zh-cn'
+
 const { dialog, message, loadingBar } = createDiscreteApi(
   ['dialog', 'message', 'loadingBar']
 )
+// 扩展dayjs插件
+dayjs.extend(relativeTime)
+dayjs.locale('zh-cn') // 设置为中文
+
 const gameStore = useGameStore()
 const col = ref(1)
 const showType = ref('old')
@@ -166,11 +175,13 @@ const load = async () => {
   try {
     await gameStore.loadSessions()
     const newS = gameStore.currentSession
+
     console.log(oldS)
     if (oldS.totalAmount == newS.totalAmount) {
-      message.success('当前数据金额未发生更改', { duration: 1000 })
+      message.warning('当前数据金额未发生更改', { duration: 1000 })
     } else {
-      message.success(`数据刷新成功金额由${oldS.totalAmount}➡️${newS.totalAmount}元，增加${newS.totalAmount - oldS.totalAmount}元`, { duration: 5000 })
+      message.success(`刷新成功~金额由 ${formatAmount(oldS.totalAmount)} ➡️ ${formatAmount(newS.totalAmount)} ，增加 ${formatAmount(newS.totalAmount - oldS.totalAmount)} `, { duration: 8000 })
+      message.success(`最后修改时间${formatFullTime(newS.updatedAt)}(${formatRelativeTime(newS.updatedAt)})`, { duration: 5000 })
     }
 
   } catch (error) {
@@ -194,6 +205,22 @@ const zodiacColumns = computed(() => {
   });
   return columns;
 });
+// 格式化完整时间（用于title提示）
+const formatFullTime = (timestamp) => {
+  return dayjs(timestamp).format('HH:mm:ss')
+}
+
+// 格式化相对时间（显示与当前时间的相对关系）
+const formatRelativeTime = (timestamp) => {
+  return dayjs(timestamp).fromNow()
+}
+const formatAmount = (amount) => {
+  return new Intl.NumberFormat('zh-CN', {
+    style: 'currency',
+    currency: 'CNY',
+    minimumFractionDigits: 0
+  }).format(amount)
+}
 </script>
 
 <style scoped>
