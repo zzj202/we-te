@@ -8,15 +8,16 @@
       <div v-if="showType == 'new'" class="button-container">
         <button class="column-btn" @click="changeCol">{{ col }}列</button>
       </div>
-      <div class="button-container">
-        <button class="column-load-btn" @click="load">刷新数据</button>
-      </div>
+
       <div class="button-container">
         <button class="column-change-btn" @click="changeShowType()">切换样式</button>
       </div>
       <div class="button-container">
-        <button class="column-past-btn" @click="checkPast()">{{ pastShow ? '关闭往期' : '打开往期' }}</button>
+        <button class="column-load-btn" @click="load">刷新数据</button>
       </div>
+      <!-- <div class="button-container">
+        <button class="column-past-btn" @click="checkPast()">{{ pastShow ? '关闭往期' : '打开往期' }}</button>
+      </div> -->
     </div>
     <div v-if="pastShow">
       <PastCarShowTable></PastCarShowTable>
@@ -237,7 +238,7 @@ const zodiacColumns = computed(() => {
   padding: 2px 4px;
   border-radius: 4px;
   border: none;
-  background-color: #c0c0c0;
+  background-color: #cc0404;
   color: white;
   font-size: 22px;
   cursor: pointer;
@@ -252,7 +253,7 @@ const zodiacColumns = computed(() => {
   border: none;
   background-color: #07d490;
   color: white;
-font-size: 22px;
+  font-size: 22px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
   transition: all 0.3s ease;
@@ -265,7 +266,7 @@ font-size: 22px;
   border: none;
   background-color: #0a07d4;
   color: white;
-font-size: 22px;
+  font-size: 22px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
   transition: all 0.3s ease;

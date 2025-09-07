@@ -299,16 +299,17 @@ const getZodiacColor = (zodiac) => {
 
 .zodiac-number {
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
 }
 
 .zodiac-name {
-    font-size: 14px;
+    font-size: 16px;
     color: #666;
     background-color: #f5f5f5;
     padding: 2px 6px;
     border-radius: 3px;
+    font-weight: bold;
 }
 
 .zodiac-content {
