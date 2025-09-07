@@ -267,7 +267,7 @@ export const useGameStore = defineStore('game', {
                     id: Date.now().toString(),
                     type: 'ADD_BET',
                     timestamp: new Date().toISOString(),
-                    description: `加注 | 共加注${bets.length}个 | 加注总金额${totalAmount}元 | 加注ID如下： ${betRecords.map(record => record.id).join(',')}`
+                    description: `加注 | 共加注${bets.length}个 | 加注总金额${totalAmount}元 | 加注ID如下： ${betRecords.map(record => record.id).join(' ')}\n 原输入：${betRecords.map(record=>record.inputValue).join(';')}`
                 };
                 this.currentSession.operationRecords.push(operationRecord);
                 await this.saveCurrentSession()  //更新session  和 session:id
