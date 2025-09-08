@@ -4,6 +4,7 @@ export interface GameSession {
   numbers: {
     number: string // 01-49
     amount: number  //金额
+    paoAmount:number //抛的金额
     odds: number  //赔率
   }[]
   flatCodes: string[] // 平码列表

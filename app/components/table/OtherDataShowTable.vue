@@ -8,13 +8,16 @@
       <div v-if="showType == 'new'" class="button-container">
         <button class="column-btn" @click="changeCol">{{ col }}列</button>
       </div>
-
       <div class="button-container">
         <button class="column-change-btn" @click="changeShowType()">切换样式</button>
       </div>
       <div class="button-container">
+        <button class="column-pao-btn" @click="checkPao()">{{ paoShow ? '关闭剩抛' : '显示剩抛' }}</button>
+      </div>
+      <div class="button-container">
         <button class="column-load-btn" @click="load">刷新数据</button>
       </div>
+
       <!-- <div class="button-container">
         <button class="column-past-btn" @click="checkPast()">{{ pastShow ? '关闭往期' : '打开往期' }}</button>
       </div> -->
@@ -59,7 +62,7 @@
     </div>
 
     <div v-if="showType == 'old'">
-      <OldDataShowTable></OldDataShowTable>
+      <OldDataShowTable v-model:paoShow="paoShow"></OldDataShowTable>
     </div>
   </div>
 </template>
@@ -86,6 +89,7 @@ const gameStore = useGameStore()
 const col = ref(1)
 const showType = ref('old')
 const pastShow = ref(false)
+const paoShow = ref(false)
 const props = defineProps({
   data: {
     type: Array,
@@ -193,6 +197,9 @@ const changeShowType = () => {
 const checkPast = () => {
   pastShow.value = !pastShow.value
 }
+const checkPao = () => {
+  paoShow.value = !paoShow.value
+}
 const zodiacColumns = computed(() => {
   const sortedZodiacs = Object.keys(zodiacTotals.value);
   const columnCount = col.value; // 两列布局
@@ -292,6 +299,19 @@ const formatAmount = (amount) => {
   border-radius: 4px;
   border: none;
   background-color: #0a07d4;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
+  transition: all 0.3s ease;
+  margin: 2px;
+}
+
+.column-pao-btn {
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: none;
+  background-color: #d46307;
   color: white;
   font-size: 22px;
   cursor: pointer;

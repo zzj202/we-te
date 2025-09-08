@@ -34,7 +34,8 @@ const menuItems = [
   { path: '/addHistory', text: '加注记录', icon: '🗃️' },
   { path: '/history', text: '操作记录', icon: '📝' },
   { path: '/openHistory', text: '开奖记录', icon: '😁' },
-  { path: '/settings', text: '系统设置', icon: '⚙️' }
+  { path: '/settings', text: '系统设置', icon: '⚙️' },
+  { path: '/pao', text: '场次抛号', icon: '🍵' }
 ]
 
 const currentRouteTitle = computed(() => {

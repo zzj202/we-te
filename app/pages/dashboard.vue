@@ -32,7 +32,6 @@ onBeforeMount(async () => {
     const route = useRoute()
     // 获取查询参数 (如 ?search=xxx)
     const sessionId = route.query.sessionId
-    console.log(sessionId)
     if (sessionId) {
         await gameStore.loadSessions()
         gameStore.setCurrentSession(sessionId).then(() => {

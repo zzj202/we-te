@@ -25,6 +25,7 @@ export const useGameStore = defineStore('game', {
                 number: (i + 1).toString().padStart(2, '0'),
                 amount: 0,
                 odds: 0,
+                paoAmount: 0
             })),
             status: 'active'
         } as GameSession,
@@ -105,6 +106,7 @@ export const useGameStore = defineStore('game', {
                     number: (i + 1).toString().padStart(2, '0'),
                     amount: 0,
                     odds: 0,
+                    paoAmount: 0
                 })),
                 status: 'active'
             } as GameSession
@@ -122,6 +124,7 @@ export const useGameStore = defineStore('game', {
                 const kvAPI = userKvAPI()
                 this.sessions.unshift(newSession)
                 this.currentSession = newSession
+                console.log('创建场次',this.currentSession)
                 await kvAPI.set('game:sessions', this.sessions)
 
             } catch (error) {
@@ -138,7 +141,7 @@ export const useGameStore = defineStore('game', {
             this.loading = true
             this.error = null
             try {
-                this.currentSession =this.getSessionById(id) as GameSession
+                this.currentSession = this.getSessionById(id) as GameSession
             } catch (error) {
                 this.error = '设置当前场次失败'
                 console.error(error)
@@ -267,7 +270,7 @@ export const useGameStore = defineStore('game', {
                     id: Date.now().toString(),
                     type: 'ADD_BET',
                     timestamp: new Date().toISOString(),
-                    description: `加注 | 共加注${bets.length}个 | 加注总金额${totalAmount}元 | 原输入：${betRecords.map(record=>record.inputValue).join('|')}`
+                    description: `加注 | 共加注${bets.length}个 | 加注总金额${totalAmount}元 | 原输入：${betRecords.map(record => record.inputValue).join('|')}`
                 };
                 this.currentSession.operationRecords.push(operationRecord);
                 await this.saveCurrentSession()  //更新session  和 session:id
@@ -284,6 +287,55 @@ export const useGameStore = defineStore('game', {
             }
         },
 
+        async placePao(addBetLines: BetLine | BetLine[]) {
+            this.loading = true
+            this.error = null
+            try {
+                loadingBar.start()
+                // 统一转换为数组处理
+                const tmp = Array.isArray(addBetLines) ? addBetLines : [addBetLines];
+                const bets = tmp.filter(bet =>
+                    bet.inputValue !== '' ||
+                    (bet.selectedNumbers?.length ?? 0) > 0 ||
+                    bet.amount !== 0
+                );
+
+                // 验证所有投注项
+                const invalidBet = bets.find(bet => !bet.isValid);
+                if (invalidBet) {
+                    throw new Error(`无效的投注项，序号: ${invalidBet.index}`);
+                }
+                // 计算总加注金额
+                const totalAmount = bets.reduce((sum, bet) => sum + bet.totalAmount, 0);
+
+                // 更新号码的投注金额和赔率
+                bets.forEach(bet => {
+                    bet.selectedNumbers.forEach(num => {
+                        const numberObj = this.currentSession.numbers.find(n => n.number === num);
+                        if (numberObj) {
+                            numberObj.paoAmount += bet.amount;
+                        }
+                    });
+                });
+                // 创建操作记录
+                const operationRecord: OperationRecord = {
+                    id: Date.now().toString(),
+                    type: 'PAO_BET',
+                    timestamp: new Date().toISOString(),
+                    description: `抛单 | 共抛出${bets.length}个 | 抛出总金额${totalAmount}元 | 原输入：${bets.map(record => record.inputValue).join('|')}`
+                };
+                this.currentSession.operationRecords.push(operationRecord);
+                await this.saveCurrentSession()  //更新session  和 session:id
+                message.success(`抛出成功!总金额${totalAmount}元`)
+            } catch (error) {
+                this.error = '抛出失败'
+                console.error(error)
+                throw error
+            } finally {
+                this.loading = false
+                loadingBar.finish()
+            }
+        },
         // 撤销加注
         async cancelBet(record: BetRecord) {
             this.loading = true
@@ -403,6 +455,7 @@ export const useGameStore = defineStore('game', {
                             number: (i + 1).toString().padStart(2, '0'),
                             amount: 0,
                             odds: 0,
+                            paoAmount: 0
                         })),
                         flatCodes: [],
                         specialCode: '',

@@ -117,7 +117,8 @@ const openCreateSessionDialog = () => {
     numbers: Array.from({ length: 49 }, (_, i) => ({
       number: (i + 1).toString().padStart(2, '0'),
       amount: 0,
-      odds: 0
+      odds: 0,
+      paoAmount:0
     })),
     status: 'active'
   }

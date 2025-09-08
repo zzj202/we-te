@@ -19,9 +19,14 @@
                     <span class="zodiac-name">{{ getZodiac(item.number) }}</span>
                 </div>
 
-                <div v-if="item.amount" class="zodiac-content">
+                <div v-if="item.amount " class="zodiac-content">
                     <div class="amount-row">
                         <span class="value">{{ formatAmount(item.amount) }}</span>
+                    </div>
+                </div>
+                <div v-if="paoShow&&(item.amount - item.paoAmount)" class="zodiac-content">
+                    <div class="amount-row">
+                        <span class="pao-value">{{ formatAmount(item.amount - item.paoAmount) }}</span>
                     </div>
                 </div>
             </div>
@@ -32,6 +37,12 @@
 import { ref, computed } from 'vue'
 const store = useMainStore()
 
+const props = defineProps({
+    paoShow: {
+        type: Boolean,
+        default: false
+    }
+})
 
 const gameStore = useGameStore()
 const numbers = computed(() => {
@@ -94,12 +105,6 @@ const sortedZodiacTotals = computed(() => {
         .map(([name, total]) => ({ name, total }))
         .sort((a, b) => b.total - a.total)
 })
-
-// // 计算百分比
-// const calculatePercent = (amount) => {
-//     if (amountStats.value.totalNum === 0) return 0
-//     return ((amount / amountStats.value.totalNum) * 100).toFixed(2)
-// }
 
 
 // 格式化金额显示
@@ -325,6 +330,15 @@ const getZodiacColor = (zodiac) => {
 .value {
     font-weight: 600;
     font-size: 16px;
+}
+
+.pao-value {
+    color: #ffffff;
+    background-color: rgb(9, 199, 9);
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: 800;
 }
 
 /* 金额颜色分类和大小变化 */
