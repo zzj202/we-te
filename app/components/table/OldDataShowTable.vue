@@ -2,7 +2,6 @@
     <div class="zodiac-container">
         <!-- 生肖总金额统计 -->
         <div class="zodiac-totals-section">
-            <h3>生肖总金额统计</h3>
             <div class="zodiac-totals-grid">
                 <div v-for="item in sortedZodiacTotals" :key="item.name" class="zodiac-total-card"
                     :style="{ backgroundColor: getZodiacColor(item.name) }">
@@ -19,12 +18,12 @@
                     <span class="zodiac-name">{{ getZodiac(item.number) }}</span>
                 </div>
 
-                <div v-if="item.amount " class="zodiac-content">
+                <div v-if="item.amount" class="zodiac-content">
                     <div class="amount-row">
                         <span class="value">{{ formatAmount(item.amount) }}</span>
                     </div>
                 </div>
-                <div v-if="paoShow&&(item.amount - item.paoAmount)" class="zodiac-content">
+                <div v-if="paoShow && (item.amount - item.paoAmount)" class="zodiac-content">
                     <div class="amount-row">
                         <span class="pao-value">{{ formatAmount(item.amount - item.paoAmount) }}</span>
                     </div>
@@ -141,7 +140,7 @@ const getZodiacColor = (zodiac) => {
 
 <style scoped>
 .zodiac-container {
-    padding: 12px;
+    padding: 1px;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -413,7 +412,7 @@ const getZodiacColor = (zodiac) => {
 
 @media (max-width: 480px) {
     .zodiac-grid {
-        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
         gap: 2px;
     }
 

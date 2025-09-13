@@ -7,7 +7,6 @@
         <div v-else>
             <OtherDataShowTable :data="gameStore.currentSession.numbers"></OtherDataShowTable>
         </div> -->
-
     </div>
 
 </template>

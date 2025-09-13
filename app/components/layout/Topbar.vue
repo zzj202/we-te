@@ -14,10 +14,6 @@
         <span class="total-amount" v-if="gameStore.currentSession.totalAmount">
           总金额：{{ formatAmount(gameStore.currentSession.totalAmount) }}
         </span>
-        <span class="total-pao-amount" v-if="gameStore.currentSession.totalAmount">
-          剩余未抛金额：{{formatAmount(gameStore.currentSession.totalAmount-gameStore.currentSession.numbers.reduce((total, num) => total + num.paoAmount, 0))}}
-        </span>
-
       </div>
     </div>
     <div class="right-section">
@@ -128,9 +124,10 @@ const formatAmount = (amount) => {
 .total-amount {
   font-size: 14px;
   color: var(--secondary-text);
-  padding: 5px 8px;
+  padding: 8px 8px;
   background-color: #f3f4f6;
   border-radius: 4px;
+  margin: 2px;
 }
 
 .total-amount {
@@ -143,6 +140,8 @@ const formatAmount = (amount) => {
   background-color: #e6f7ff;
   color: green;
   font-weight: bold;
+  padding: 8px;
+  margin: 2px;
 }
 
 .right-section {
@@ -177,6 +176,10 @@ const formatAmount = (amount) => {
 }
 
 @media (max-width: 768px) {
+  .total-pao-amount {
+    display: none;
+  }
+
   .total-amount {
     display: none
   }

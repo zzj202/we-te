@@ -3,19 +3,24 @@
     <!-- 总金额汇总 -->
     <div class="total-summary">
       <div class="total-amount">
-        总金额: {{ totalAmount }}
+        <div class="total-all-amount">总金额: {{ formatAmount(totalAmount) }}</div>
+        <div class="total-pao-amount" v-if="gameStore.currentSession.totalAmount">
+          剩余金额：{{formatAmount(gameStore.currentSession.totalAmount - gameStore.currentSession.numbers.reduce((total,
+            num) => total + num.paoAmount, 0))}}
+        </div>
       </div>
       <div v-if="showType == 'new'" class="button-container">
         <button class="column-btn" @click="changeCol">{{ col }}列</button>
       </div>
       <div class="button-container">
-        <button class="column-change-btn" @click="changeShowType()">切换样式</button>
-      </div>
-      <div class="button-container">
         <button class="column-pao-btn" @click="checkPao()">{{ paoShow ? '关闭剩抛' : '显示剩抛' }}</button>
       </div>
       <div class="button-container">
-        <button class="column-load-btn" @click="load">刷新数据</button>
+        <button class="column-change-btn" @click="changeShowType()">切换</button>
+      </div>
+
+      <div class="button-container">
+        <button class="column-load-btn" @click="load">刷新</button>
       </div>
 
       <!-- <div class="button-container">
@@ -254,13 +259,25 @@ const formatAmount = (amount) => {
 }
 
 .total-amount {
+  display: flex;
+  align-items: center;
   flex: 1;
   /* 占据剩余空间 */
   text-align: center;
   /* 文本居中 */
-  font-size: 25px;
+  font-size: 18px;
   font-weight: bold;
   color: #4263eb;
+}
+
+.total-all-amount {
+  margin: 5px 15px;
+}
+
+.total-pao-amount {
+  color: #07d490;
+  font-size: 18px;
+  margin: 5px 15px;
 }
 
 .button-container {
@@ -287,7 +304,7 @@ const formatAmount = (amount) => {
   border: none;
   background-color: #07d490;
   color: white;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
   transition: all 0.3s ease;
@@ -300,7 +317,7 @@ const formatAmount = (amount) => {
   border: none;
   background-color: #0a07d4;
   color: white;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
   transition: all 0.3s ease;
@@ -313,7 +330,7 @@ const formatAmount = (amount) => {
   border: none;
   background-color: #d46307;
   color: white;
-  font-size: 22px;
+  font-size: 18px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(26, 53, 204, 0.1);
   transition: all 0.3s ease;
@@ -400,6 +417,10 @@ const formatAmount = (amount) => {
 
 
 @media (max-width: 576px) {
+  .total-amount {
+    display: block;
+  }
+
   .card-grid {
     grid-template-columns: repeat(7, 1fr);
   }
