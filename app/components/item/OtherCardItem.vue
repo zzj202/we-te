@@ -58,10 +58,10 @@ const getCardClass = (amount) => {
 .card-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1px;
-    font-size: 12px;
-    font-weight: 1000;
-    color: #6c757d;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .card-number {

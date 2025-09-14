@@ -83,8 +83,8 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
 
-const { dialog, message, loadingBar } = createDiscreteApi(
-  ['dialog', 'message', 'loadingBar']
+const { dialog, message, loadingBar, notification } = createDiscreteApi(
+  ['dialog', 'message', 'loadingBar', 'notification']
 )
 // 扩展dayjs插件
 dayjs.extend(relativeTime)
@@ -103,7 +103,22 @@ const props = defineProps({
   }
 });
 
+// // 定时器变量
+// let intervalId = null;
+// onMounted(() => {
+//   // // 设置定时器，每10秒执行一次
+//   // intervalId = setInterval(() => {
+//   //   console.log('定时执行，当前时间:', new Date().toLocaleTimeString());
+//   //   // 这里可以添加你需要的其他逻辑
+//   // }, 1000); // 10000毫秒 = 10秒
+// });
 
+// onUnmounted(() => {
+//   // 组件卸载时清除定时器
+//   if (intervalId) {
+//     clearInterval(intervalId);
+//   }
+// });
 // 计算总金额
 const totalAmount = computed(() => {
   return props.data.reduce((sum, item) => sum + item.amount, 0);
@@ -180,6 +195,13 @@ const changeCol = () => {
   col.value = col.value === 1 ? 2 : 1
 }
 const load = async () => {
+  // notification.success({
+  //   title: '有更新！',
+  //   content: `总金额有变化，请刷新`,
+  //   meta: `${dayjs().format('HH:mm:ss')}`,
+  //   onAfterLeave: () => {
+  //   }
+  // })
   const oldS = gameStore.currentSession
   try {
     await gameStore.loadSessions()

@@ -17,13 +17,12 @@
                     <span class="zodiac-number">{{ item.number }}</span>
                     <span class="zodiac-name">{{ getZodiac(item.number) }}</span>
                 </div>
-
                 <div v-if="item.amount" class="zodiac-content">
                     <div class="amount-row">
                         <span class="value">{{ formatAmount(item.amount) }}</span>
                     </div>
                 </div>
-                <div v-if="paoShow && (item.amount - item.paoAmount)" class="zodiac-content">
+                <div v-if="paoShow" class="zodiac-content">
                     <div class="amount-row">
                         <span class="pao-value">{{ formatAmount(item.amount - item.paoAmount) }}</span>
                     </div>
