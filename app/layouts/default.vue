@@ -23,7 +23,6 @@ import Topbar from '@/components/layout/Topbar.vue'
 
 const isSidebarCollapsed = ref(true)
 const isMobile = ref(false)
-
 const route = useRoute()
 const menuItems = [
   { path: '/dashboard', text: '仪表盘', icon: '📊' },
