@@ -76,9 +76,15 @@ const selectedNumbers = computed(() => {
         errorMessage.value = '金额格式错误';
         return []
     }
-    // if(input.includes('红')){
-
-    // }
+    if (
+        (input.includes('红') && input.includes('蓝')) ||
+        (input.includes('红') && input.includes('绿')) ||
+        (input.includes('蓝') && input.includes('绿')) ||
+        (input.includes('红') && input.includes('蓝') && input.includes('绿'))
+    ) {
+        errorMessage.value = '同时有多种波色';
+        return []
+    }
     let typeStr = ''
     let descriptionStr = ''
     if (input.includes('双')) {

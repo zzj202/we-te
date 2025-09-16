@@ -2,7 +2,6 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-
   devServer: {
     host: '0.0.0.0', // 监听所有网络接口
     port: 4000,// 或其他你想要的端口
