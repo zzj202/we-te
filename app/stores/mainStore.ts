@@ -17,7 +17,6 @@ export const useMainStore = defineStore('main', {
         },
 
     },
-
     actions: {
         //解析addBetString
         handleAddBetString() {

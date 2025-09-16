@@ -51,7 +51,7 @@ const changeToNumber = {
     '大': ['25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49'],
     '大双': ['26', '28', '30', '32', '34', '36', '38', '40', '42', '44', '46', '48'],
     '小双': ['02', '04', '06', '08', '10', '12', '14', '16', '18', '20', '22', '24'],
-    '大单': ['25','27', '29', '31', '33', '35', '37', '39', '41', '43', '45', '47', '49'],
+    '大单': ['25', '27', '29', '31', '33', '35', '37', '39', '41', '43', '45', '47', '49'],
     '小单': ['01', '03', '05', '07', '09', '11', '13', '15', '17', '19', '21', '23'],
     '红波': ['01', '02', '07', '08', '12', '13', '18', '19', '23', '24', '29', '30', '34', '35', '40', '45', '46'],
     '蓝波': ['03', '04', '09', '10', '14', '15', '20', '25', '26', '31', '36', '37', '41', '42', '47', '48'],
@@ -76,6 +76,9 @@ const selectedNumbers = computed(() => {
         errorMessage.value = '金额格式错误';
         return []
     }
+    // if(input.includes('红')){
+
+    // }
     let typeStr = ''
     let descriptionStr = ''
     if (input.includes('双')) {
@@ -127,24 +130,41 @@ const selectedNumbers = computed(() => {
             typeStr = '波色'
             descriptionStr = '绿单'
         } else {
-            // 仅"单"的情况
             result = changeToNumber.单;
             typeStr = '单双'
             descriptionStr = '单数'
         }
     }
     else if (input.includes('绿') || input.includes('绿波')) {
-        result = changeToNumber.绿波;
+        if (input.includes('小')) {
+            result = changeToNumber.绿波.filter(num => parseInt(num) < 25);
+        } else if (input.includes('大')) {
+            result = changeToNumber.绿波.filter(num => parseInt(num) >= 25);
+        } else {
+            result = changeToNumber.绿波;
+        }
         typeStr = '波色'
         descriptionStr = '绿波'
     }
     else if (input.includes('红') || input.includes('红波')) {
-        result = changeToNumber.红波;
+        if (input.includes('小')) {
+            result = changeToNumber.红波.filter(num => parseInt(num) < 25);
+        } else if (input.includes('大')) {
+            result = changeToNumber.红波.filter(num => parseInt(num) >= 25);
+        } else {
+            result = changeToNumber.红波;
+        }
         typeStr = '波色'
         descriptionStr = '红波'
     }
     else if (input.includes('蓝') || input.includes('蓝波')) {
-        result = changeToNumber.蓝波;
+        if (input.includes('小')) {
+            result = changeToNumber.蓝波.filter(num => parseInt(num) < 25);
+        } else if (input.includes('大')) {
+            result = changeToNumber.蓝波.filter(num => parseInt(num) >= 25);
+        } else {
+            result = changeToNumber.蓝波;
+        }
         typeStr = '波色'
         descriptionStr = '蓝波'
     }

@@ -65,7 +65,7 @@ const detectedMode = computed(() => {
   const hasTail = /^[0-9一二三四五六七八九十]尾|^[0-9零一二三四五六七八九]头/.test(value);
 
   // 波色检测
-  const hasColor = /红|蓝|绿|红波|蓝波|绿波|波[红蓝绿]|单|双|[大|小][单|双]|大数|小数/.test(value);
+  const hasColor = /红|蓝|绿|红波|蓝波|绿波|波[红蓝绿]|单|双|[大|小][单|双]|大数|小数|大号|小号/.test(value);
 
   if (hasZodiac) return 'zodiac';
   if (hasTail) return 'tail';
